@@ -1,4 +1,5 @@
 ﻿using ERPSystem_DatabaseOperation;
+using ERPSystem_DatabaseServices.Implementations;
 using ERPSystem_DatabaseServices.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,9 @@ namespace ERPSystem_WebApp.Controllers
         public ActionResult Index()
         {
             ViewBag.topics = GetTopic();
-            tbltopics_Contents c =new tbltopics_Contents();
+            tbltopics_Contents c = new tbltopics_Contents();
             return View();
+
         }
 
         public List<SelectListItem> GetTopic()
@@ -43,11 +45,16 @@ namespace ERPSystem_WebApp.Controllers
                 lst.Add(item);
             }
             return lst;
-            
         }
 
-
-
-     
+        [HttpPost]
+        public ActionResult Index(tbltopics_Contents tdata)
+        {
+            ContentService.AddTopicContent(tdata);
+            ViewBag.msg = "topicContent ADD Successfully";
+            ViewBag.topics = GetTopic();
+            tbltopics_Contents t = new tbltopics_Contents();
+            return View();
+        }
     }
 }

@@ -17,17 +17,18 @@
             <table>
                 <tr>
                     <td>Select Topic:</td>
-                    <td>@Html.DropDownListFor(e => e.topic_id,ViewBag.topics as List<SelectListItem>,"select designation")</td>
+                    <td>@Html.DropDownListFor(e => e.topic_id, ViewBag.topics as List<SelectListItem>, "Select Topic")</td>
                 </tr>
                 <tr>
                     <td>Content Name </td>
-                    <td>@Html.TextBoxFor(e=>e.content_name)</td>
+                    <td>@Html.TextBoxFor(e => e.content_name)</td>
                 </tr>
                 <tr>
                     <td><input type="submit" value="Submit" /></td>
                 </tr>
             </table>
         }
+        <h2>@ViewBag.msg</h2>
     </div>
 </body>
 </html>
