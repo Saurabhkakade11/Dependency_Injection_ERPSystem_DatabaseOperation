@@ -22,6 +22,7 @@ namespace ERPSystem_WebApp.Controllers
             ViewBag.topics=topicService.GetTopics();
             return View(t);
         }
+
         [HttpPost]
         public ActionResult Index(tbltraining_topics tp)
         {
