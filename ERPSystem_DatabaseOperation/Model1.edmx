@@ -1,0 +1,524 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ERPSystemTaskModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblStudent_details">
+          <Key>
+            <PropertyRef Name="Student_id" />
+          </Key>
+          <Property Name="Student_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Student_name" Type="varchar" MaxLength="100" />
+          <Property Name="email" Type="varchar" MaxLength="100" />
+          <Property Name="mobile" Type="varchar" MaxLength="100" />
+          <Property Name="qualification" Type="varchar" MaxLength="100" />
+          <Property Name="birth_date" Type="date" />
+        </EntityType>
+        <EntityType Name="tblStudent_Payments">
+          <Key>
+            <PropertyRef Name="Payment_id" />
+          </Key>
+          <Property Name="Payment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="registration_id" Type="int" />
+          <Property Name="Payment_date" Type="date" />
+          <Property Name="Payment_amount" Type="float" />
+          <Property Name="Payment_mode" Type="varchar" MaxLength="100" />
+          <Property Name="Payment_description" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tblStudent_Registration">
+          <Key>
+            <PropertyRef Name="registration_id" />
+          </Key>
+          <Property Name="registration_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Student_id" Type="int" />
+          <Property Name="fee_id" Type="int" />
+          <Property Name="registration_date" Type="date" />
+          <Property Name="discount" Type="float" />
+        </EntityType>
+        <EntityType Name="tbltopics_Contents">
+          <Key>
+            <PropertyRef Name="content_id" />
+          </Key>
+          <Property Name="content_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="content_name" Type="varchar" MaxLength="100" />
+          <Property Name="topic_id" Type="int" />
+        </EntityType>
+        <EntityType Name="tbltraining_course_fees">
+          <Key>
+            <PropertyRef Name="fee_id" />
+          </Key>
+          <Property Name="fee_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="course_id" Type="int" />
+          <Property Name="fee_type" Type="varchar" MaxLength="100" />
+          <Property Name="fees_amount" Type="float" />
+          <Property Name="gst" Type="float" />
+        </EntityType>
+        <EntityType Name="tbltraining_course_topics">
+          <Key>
+            <PropertyRef Name="course_topic_id" />
+          </Key>
+          <Property Name="course_topic_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="course_id" Type="int" />
+          <Property Name="topic_id" Type="int" />
+        </EntityType>
+        <EntityType Name="tbltraining_courses">
+          <Key>
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="course_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="course_name" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tbltraining_topics">
+          <Key>
+            <PropertyRef Name="topic_id" />
+          </Key>
+          <Property Name="topic_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="topic_name" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="fkcid">
+          <End Role="tbltraining_courses" Type="Self.tbltraining_courses" Multiplicity="0..1" />
+          <End Role="tbltraining_course_fees" Type="Self.tbltraining_course_fees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltraining_courses">
+              <PropertyRef Name="course_id" />
+            </Principal>
+            <Dependent Role="tbltraining_course_fees">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkcids">
+          <End Role="tbltraining_courses" Type="Self.tbltraining_courses" Multiplicity="0..1" />
+          <End Role="tbltraining_course_topics" Type="Self.tbltraining_course_topics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltraining_courses">
+              <PropertyRef Name="course_id" />
+            </Principal>
+            <Dependent Role="tbltraining_course_topics">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkfids">
+          <End Role="tbltraining_course_fees" Type="Self.tbltraining_course_fees" Multiplicity="0..1" />
+          <End Role="tblStudent_Registration" Type="Self.tblStudent_Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltraining_course_fees">
+              <PropertyRef Name="fee_id" />
+            </Principal>
+            <Dependent Role="tblStudent_Registration">
+              <PropertyRef Name="fee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkreg">
+          <End Role="tblStudent_Registration" Type="Self.tblStudent_Registration" Multiplicity="0..1" />
+          <End Role="tblStudent_Payments" Type="Self.tblStudent_Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStudent_Registration">
+              <PropertyRef Name="registration_id" />
+            </Principal>
+            <Dependent Role="tblStudent_Payments">
+              <PropertyRef Name="registration_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fksids">
+          <End Role="tblStudent_details" Type="Self.tblStudent_details" Multiplicity="0..1" />
+          <End Role="tblStudent_Registration" Type="Self.tblStudent_Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStudent_details">
+              <PropertyRef Name="Student_id" />
+            </Principal>
+            <Dependent Role="tblStudent_Registration">
+              <PropertyRef Name="Student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fktpid">
+          <End Role="tbltraining_topics" Type="Self.tbltraining_topics" Multiplicity="0..1" />
+          <End Role="tbltopics_Contents" Type="Self.tbltopics_Contents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltraining_topics">
+              <PropertyRef Name="topic_id" />
+            </Principal>
+            <Dependent Role="tbltopics_Contents">
+              <PropertyRef Name="topic_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fktpids">
+          <End Role="tbltraining_topics" Type="Self.tbltraining_topics" Multiplicity="0..1" />
+          <End Role="tbltraining_course_topics" Type="Self.tbltraining_course_topics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltraining_topics">
+              <PropertyRef Name="topic_id" />
+            </Principal>
+            <Dependent Role="tbltraining_course_topics">
+              <PropertyRef Name="topic_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ERPSystemTaskModelStoreContainer">
+          <EntitySet Name="tblStudent_details" EntityType="Self.tblStudent_details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStudent_Payments" EntityType="Self.tblStudent_Payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStudent_Registration" EntityType="Self.tblStudent_Registration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbltopics_Contents" EntityType="Self.tbltopics_Contents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbltraining_course_fees" EntityType="Self.tbltraining_course_fees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbltraining_course_topics" EntityType="Self.tbltraining_course_topics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbltraining_courses" EntityType="Self.tbltraining_courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbltraining_topics" EntityType="Self.tbltraining_topics" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fkcid" Association="Self.fkcid">
+            <End Role="tbltraining_courses" EntitySet="tbltraining_courses" />
+            <End Role="tbltraining_course_fees" EntitySet="tbltraining_course_fees" />
+          </AssociationSet>
+          <AssociationSet Name="fkcids" Association="Self.fkcids">
+            <End Role="tbltraining_courses" EntitySet="tbltraining_courses" />
+            <End Role="tbltraining_course_topics" EntitySet="tbltraining_course_topics" />
+          </AssociationSet>
+          <AssociationSet Name="fkfids" Association="Self.fkfids">
+            <End Role="tbltraining_course_fees" EntitySet="tbltraining_course_fees" />
+            <End Role="tblStudent_Registration" EntitySet="tblStudent_Registration" />
+          </AssociationSet>
+          <AssociationSet Name="fkreg" Association="Self.fkreg">
+            <End Role="tblStudent_Registration" EntitySet="tblStudent_Registration" />
+            <End Role="tblStudent_Payments" EntitySet="tblStudent_Payments" />
+          </AssociationSet>
+          <AssociationSet Name="fksids" Association="Self.fksids">
+            <End Role="tblStudent_details" EntitySet="tblStudent_details" />
+            <End Role="tblStudent_Registration" EntitySet="tblStudent_Registration" />
+          </AssociationSet>
+          <AssociationSet Name="fktpid" Association="Self.fktpid">
+            <End Role="tbltraining_topics" EntitySet="tbltraining_topics" />
+            <End Role="tbltopics_Contents" EntitySet="tbltopics_Contents" />
+          </AssociationSet>
+          <AssociationSet Name="fktpids" Association="Self.fktpids">
+            <End Role="tbltraining_topics" EntitySet="tbltraining_topics" />
+            <End Role="tbltraining_course_topics" EntitySet="tbltraining_course_topics" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ERPSystemTaskModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblStudent_details">
+          <Key>
+            <PropertyRef Name="Student_id" />
+          </Key>
+          <Property Name="Student_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Student_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="qualification" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="birth_date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="tblStudent_Registration" Relationship="Self.fksids" FromRole="tblStudent_details" ToRole="tblStudent_Registration" />
+        </EntityType>
+        <EntityType Name="tblStudent_Payments">
+          <Key>
+            <PropertyRef Name="Payment_id" />
+          </Key>
+          <Property Name="Payment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="registration_id" Type="Int32" />
+          <Property Name="Payment_date" Type="DateTime" Precision="0" />
+          <Property Name="Payment_amount" Type="Double" />
+          <Property Name="Payment_mode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Payment_description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblStudent_Registration" Relationship="Self.fkreg" FromRole="tblStudent_Payments" ToRole="tblStudent_Registration" />
+        </EntityType>
+        <EntityType Name="tblStudent_Registration">
+          <Key>
+            <PropertyRef Name="registration_id" />
+          </Key>
+          <Property Name="registration_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Student_id" Type="Int32" />
+          <Property Name="fee_id" Type="Int32" />
+          <Property Name="registration_date" Type="DateTime" Precision="0" />
+          <Property Name="discount" Type="Double" />
+          <NavigationProperty Name="tblStudent_details" Relationship="Self.fksids" FromRole="tblStudent_Registration" ToRole="tblStudent_details" />
+          <NavigationProperty Name="tblStudent_Payments" Relationship="Self.fkreg" FromRole="tblStudent_Registration" ToRole="tblStudent_Payments" />
+          <NavigationProperty Name="tbltraining_course_fees" Relationship="Self.fkfids" FromRole="tblStudent_Registration" ToRole="tbltraining_course_fees" />
+        </EntityType>
+        <EntityType Name="tbltopics_Contents">
+          <Key>
+            <PropertyRef Name="content_id" />
+          </Key>
+          <Property Name="content_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="content_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="topic_id" Type="Int32" />
+          <NavigationProperty Name="tbltraining_topics" Relationship="Self.fktpid" FromRole="tbltopics_Contents" ToRole="tbltraining_topics" />
+        </EntityType>
+        <EntityType Name="tbltraining_course_fees">
+          <Key>
+            <PropertyRef Name="fee_id" />
+          </Key>
+          <Property Name="fee_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" />
+          <Property Name="fee_type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="fees_amount" Type="Double" />
+          <Property Name="gst" Type="Double" />
+          <NavigationProperty Name="tblStudent_Registration" Relationship="Self.fkfids" FromRole="tbltraining_course_fees" ToRole="tblStudent_Registration" />
+          <NavigationProperty Name="tbltraining_courses" Relationship="Self.fkcid" FromRole="tbltraining_course_fees" ToRole="tbltraining_courses" />
+        </EntityType>
+        <EntityType Name="tbltraining_course_topics">
+          <Key>
+            <PropertyRef Name="course_topic_id" />
+          </Key>
+          <Property Name="course_topic_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" />
+          <Property Name="topic_id" Type="Int32" />
+          <NavigationProperty Name="tbltraining_courses" Relationship="Self.fkcids" FromRole="tbltraining_course_topics" ToRole="tbltraining_courses" />
+          <NavigationProperty Name="tbltraining_topics" Relationship="Self.fktpids" FromRole="tbltraining_course_topics" ToRole="tbltraining_topics" />
+        </EntityType>
+        <EntityType Name="tbltraining_courses">
+          <Key>
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="course_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbltraining_course_fees" Relationship="Self.fkcid" FromRole="tbltraining_courses" ToRole="tbltraining_course_fees" />
+          <NavigationProperty Name="tbltraining_course_topics" Relationship="Self.fkcids" FromRole="tbltraining_courses" ToRole="tbltraining_course_topics" />
+        </EntityType>
+        <EntityType Name="tbltraining_topics">
+          <Key>
+            <PropertyRef Name="topic_id" />
+          </Key>
+          <Property Name="topic_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="topic_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbltopics_Contents" Relationship="Self.fktpid" FromRole="tbltraining_topics" ToRole="tbltopics_Contents" />
+          <NavigationProperty Name="tbltraining_course_topics" Relationship="Self.fktpids" FromRole="tbltraining_topics" ToRole="tbltraining_course_topics" />
+        </EntityType>
+        <Association Name="fksids">
+          <End Role="tblStudent_details" Type="Self.tblStudent_details" Multiplicity="0..1" />
+          <End Role="tblStudent_Registration" Type="Self.tblStudent_Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStudent_details">
+              <PropertyRef Name="Student_id" />
+            </Principal>
+            <Dependent Role="tblStudent_Registration">
+              <PropertyRef Name="Student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkreg">
+          <End Role="tblStudent_Registration" Type="Self.tblStudent_Registration" Multiplicity="0..1" />
+          <End Role="tblStudent_Payments" Type="Self.tblStudent_Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStudent_Registration">
+              <PropertyRef Name="registration_id" />
+            </Principal>
+            <Dependent Role="tblStudent_Payments">
+              <PropertyRef Name="registration_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkfids">
+          <End Role="tbltraining_course_fees" Type="Self.tbltraining_course_fees" Multiplicity="0..1" />
+          <End Role="tblStudent_Registration" Type="Self.tblStudent_Registration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltraining_course_fees">
+              <PropertyRef Name="fee_id" />
+            </Principal>
+            <Dependent Role="tblStudent_Registration">
+              <PropertyRef Name="fee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fktpid">
+          <End Role="tbltraining_topics" Type="Self.tbltraining_topics" Multiplicity="0..1" />
+          <End Role="tbltopics_Contents" Type="Self.tbltopics_Contents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltraining_topics">
+              <PropertyRef Name="topic_id" />
+            </Principal>
+            <Dependent Role="tbltopics_Contents">
+              <PropertyRef Name="topic_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkcid">
+          <End Role="tbltraining_courses" Type="Self.tbltraining_courses" Multiplicity="0..1" />
+          <End Role="tbltraining_course_fees" Type="Self.tbltraining_course_fees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltraining_courses">
+              <PropertyRef Name="course_id" />
+            </Principal>
+            <Dependent Role="tbltraining_course_fees">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fkcids">
+          <End Role="tbltraining_courses" Type="Self.tbltraining_courses" Multiplicity="0..1" />
+          <End Role="tbltraining_course_topics" Type="Self.tbltraining_course_topics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltraining_courses">
+              <PropertyRef Name="course_id" />
+            </Principal>
+            <Dependent Role="tbltraining_course_topics">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fktpids">
+          <End Role="tbltraining_topics" Type="Self.tbltraining_topics" Multiplicity="0..1" />
+          <End Role="tbltraining_course_topics" Type="Self.tbltraining_course_topics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbltraining_topics">
+              <PropertyRef Name="topic_id" />
+            </Principal>
+            <Dependent Role="tbltraining_course_topics">
+              <PropertyRef Name="topic_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ERPSystemTaskEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblStudent_details" EntityType="Self.tblStudent_details" />
+          <EntitySet Name="tblStudent_Payments" EntityType="Self.tblStudent_Payments" />
+          <EntitySet Name="tblStudent_Registration" EntityType="Self.tblStudent_Registration" />
+          <EntitySet Name="tbltopics_Contents" EntityType="Self.tbltopics_Contents" />
+          <EntitySet Name="tbltraining_course_fees" EntityType="Self.tbltraining_course_fees" />
+          <EntitySet Name="tbltraining_course_topics" EntityType="Self.tbltraining_course_topics" />
+          <EntitySet Name="tbltraining_courses" EntityType="Self.tbltraining_courses" />
+          <EntitySet Name="tbltraining_topics" EntityType="Self.tbltraining_topics" />
+          <AssociationSet Name="fksids" Association="Self.fksids">
+            <End Role="tblStudent_details" EntitySet="tblStudent_details" />
+            <End Role="tblStudent_Registration" EntitySet="tblStudent_Registration" />
+          </AssociationSet>
+          <AssociationSet Name="fkreg" Association="Self.fkreg">
+            <End Role="tblStudent_Registration" EntitySet="tblStudent_Registration" />
+            <End Role="tblStudent_Payments" EntitySet="tblStudent_Payments" />
+          </AssociationSet>
+          <AssociationSet Name="fkfids" Association="Self.fkfids">
+            <End Role="tbltraining_course_fees" EntitySet="tbltraining_course_fees" />
+            <End Role="tblStudent_Registration" EntitySet="tblStudent_Registration" />
+          </AssociationSet>
+          <AssociationSet Name="fktpid" Association="Self.fktpid">
+            <End Role="tbltraining_topics" EntitySet="tbltraining_topics" />
+            <End Role="tbltopics_Contents" EntitySet="tbltopics_Contents" />
+          </AssociationSet>
+          <AssociationSet Name="fkcid" Association="Self.fkcid">
+            <End Role="tbltraining_courses" EntitySet="tbltraining_courses" />
+            <End Role="tbltraining_course_fees" EntitySet="tbltraining_course_fees" />
+          </AssociationSet>
+          <AssociationSet Name="fkcids" Association="Self.fkcids">
+            <End Role="tbltraining_courses" EntitySet="tbltraining_courses" />
+            <End Role="tbltraining_course_topics" EntitySet="tbltraining_course_topics" />
+          </AssociationSet>
+          <AssociationSet Name="fktpids" Association="Self.fktpids">
+            <End Role="tbltraining_topics" EntitySet="tbltraining_topics" />
+            <End Role="tbltraining_course_topics" EntitySet="tbltraining_course_topics" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ERPSystemTaskModelStoreContainer" CdmEntityContainer="ERPSystemTaskEntities">
+          <EntitySetMapping Name="tblStudent_details">
+            <EntityTypeMapping TypeName="ERPSystemTaskModel.tblStudent_details">
+              <MappingFragment StoreEntitySet="tblStudent_details">
+                <ScalarProperty Name="Student_id" ColumnName="Student_id" />
+                <ScalarProperty Name="Student_name" ColumnName="Student_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="qualification" ColumnName="qualification" />
+                <ScalarProperty Name="birth_date" ColumnName="birth_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStudent_Payments">
+            <EntityTypeMapping TypeName="ERPSystemTaskModel.tblStudent_Payments">
+              <MappingFragment StoreEntitySet="tblStudent_Payments">
+                <ScalarProperty Name="Payment_id" ColumnName="Payment_id" />
+                <ScalarProperty Name="registration_id" ColumnName="registration_id" />
+                <ScalarProperty Name="Payment_date" ColumnName="Payment_date" />
+                <ScalarProperty Name="Payment_amount" ColumnName="Payment_amount" />
+                <ScalarProperty Name="Payment_mode" ColumnName="Payment_mode" />
+                <ScalarProperty Name="Payment_description" ColumnName="Payment_description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStudent_Registration">
+            <EntityTypeMapping TypeName="ERPSystemTaskModel.tblStudent_Registration">
+              <MappingFragment StoreEntitySet="tblStudent_Registration">
+                <ScalarProperty Name="registration_id" ColumnName="registration_id" />
+                <ScalarProperty Name="Student_id" ColumnName="Student_id" />
+                <ScalarProperty Name="fee_id" ColumnName="fee_id" />
+                <ScalarProperty Name="registration_date" ColumnName="registration_date" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbltopics_Contents">
+            <EntityTypeMapping TypeName="ERPSystemTaskModel.tbltopics_Contents">
+              <MappingFragment StoreEntitySet="tbltopics_Contents">
+                <ScalarProperty Name="content_id" ColumnName="content_id" />
+                <ScalarProperty Name="content_name" ColumnName="content_name" />
+                <ScalarProperty Name="topic_id" ColumnName="topic_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbltraining_course_fees">
+            <EntityTypeMapping TypeName="ERPSystemTaskModel.tbltraining_course_fees">
+              <MappingFragment StoreEntitySet="tbltraining_course_fees">
+                <ScalarProperty Name="fee_id" ColumnName="fee_id" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="fee_type" ColumnName="fee_type" />
+                <ScalarProperty Name="fees_amount" ColumnName="fees_amount" />
+                <ScalarProperty Name="gst" ColumnName="gst" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbltraining_course_topics">
+            <EntityTypeMapping TypeName="ERPSystemTaskModel.tbltraining_course_topics">
+              <MappingFragment StoreEntitySet="tbltraining_course_topics">
+                <ScalarProperty Name="course_topic_id" ColumnName="course_topic_id" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="topic_id" ColumnName="topic_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbltraining_courses">
+            <EntityTypeMapping TypeName="ERPSystemTaskModel.tbltraining_courses">
+              <MappingFragment StoreEntitySet="tbltraining_courses">
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="course_name" ColumnName="course_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbltraining_topics">
+            <EntityTypeMapping TypeName="ERPSystemTaskModel.tbltraining_topics">
+              <MappingFragment StoreEntitySet="tbltraining_topics">
+                <ScalarProperty Name="topic_id" ColumnName="topic_id" />
+                <ScalarProperty Name="topic_name" ColumnName="topic_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
