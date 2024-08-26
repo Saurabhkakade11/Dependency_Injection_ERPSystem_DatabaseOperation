@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ERPSystem_DatabaseServices.Implementations
 {
-    public class CourseServices
+    public class CourseServices:ICourseServices
     {
         IRepository<tbltraining_courses> courserepo;
         IRepository<tbltraining_course_fees> feesrepo;

@@ -24,7 +24,7 @@ namespace ERPSystem_WebApp
             container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
             container.RegisterType<ITopicService, TopicService>();
             container.RegisterType<ITopicContentService, TopicContentService>();
-            //container.RegisterType<ICourseServices, CourseServices>();
+            container.RegisterType<ICourseServices, CourseServices>();
 
 
 
